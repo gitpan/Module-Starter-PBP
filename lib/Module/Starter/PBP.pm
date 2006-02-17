@@ -1,7 +1,7 @@
 package Module::Starter::PBP;
 use base 'Module::Starter::Simple';
 
-use version; $VERSION = qv('0.0.2');
+use version; $VERSION = qv('0.0.3');
 
 use warnings;
 use strict;
@@ -231,6 +231,7 @@ sub import {
         ['Module.pm'],
         ['t', 'pod-coverage.t'],
         ['t', 'pod.t'],
+        ['t', 'perlcritic.t'],
     );
 
     my %contents_of = do { local $/; "", split /_____\[ (\S+) \]_+\n/, <DATA> };
@@ -280,7 +281,7 @@ Module::Starter::PBP - Create a module as recommended in "Perl Best Practices"
 
 =head1 VERSION
 
-This document describes Module::Starter::PBP version 0.0.1
+This document describes Module::Starter::PBP version 0.0.3
 
 
 =head1 SYNOPSIS
@@ -603,18 +604,17 @@ Revision history for <DISTRO>
 _____[ Module.pm ]_______________________________________________
 package <MODULE NAME>;
 
-use version; $VERSION = qv('0.0.1');
-
 use warnings;
 use strict;
 use Carp;
+
+use version; $VERSION = qv('0.0.3');
 
 # Other recommended modules (uncomment to use):
 #  use IO::Prompt;
 #  use Perl6::Export;
 #  use Perl6::Slurp;
 #  use Perl6::Say;
-#  use Regexp::Autoflags;
 
 
 # Module implementation here
@@ -784,3 +784,13 @@ use Test::More;
 eval "use Test::Pod 1.14";
 plan skip_all => "Test::Pod 1.14 required for testing POD" if $@;
 all_pod_files_ok();
+_____[ perlcritic.t ]___________________________________________________
+#!perl
+
+if (!require Test::Perl::Critic) {
+    Test::More::plan(
+        skip_all => "Test::Perl::Critic required for testing PBP compliance"
+    );
+}
+
+Test::Perl::Critic::all_critic_ok();
